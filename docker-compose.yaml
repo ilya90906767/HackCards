@@ -33,7 +33,7 @@ services:
     depends_on:
       - db
       - django
-    command: python manage.py run_bot
+    command: python manage.py run_bot 
 
   fetcher:
     build: ./news_bot
