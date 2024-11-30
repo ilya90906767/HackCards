@@ -34,17 +34,3 @@ services:
       - db
       - django
     command: python manage.py run_bot 
-
-  fetcher:
-    build: ./news_bot
-    stdin_open: true
-    environment:
-      - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
-    env_file:
-      - .env
-    volumes:
-      - ./news_bot:/app
-    depends_on:
-      - db
-      - django
-    command: python manage.py run_fetcher
