@@ -16,6 +16,9 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'  # URL для доступа к медиафайлам
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Физический путь на сервере
+
 load_dotenv()
 
 # Quick-start development settings - unsuitable for production
@@ -153,13 +156,3 @@ LOGGING = {
         },
     },
 }
-
-CELERY_BROKER_URL = 'amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@rabbitmq:5672//'.format(
-    RABBITMQ_USER=os.environ['RABBITMQ_USER'],
-    RABBITMQ_PASSWORD=os.environ['RABBITMQ_PASSWORD']
-)
-CELERY_RESULT_BACKEND = 'rpc'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Europe/Moscow' # set your timezone

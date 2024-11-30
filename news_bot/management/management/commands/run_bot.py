@@ -12,5 +12,5 @@ class Command(BaseCommand):
     
     def handle(self, *args, **options):
         print('Bot polling')
-        logging.basicConfig(level=os.getenv("DJANGO_LOG_LEVEL", "INFO"))
+        logging.basicConfig(level=os.getenv("DJANGO_LOG_LEVEL", "WARNING"))
         asyncio.run(main())
