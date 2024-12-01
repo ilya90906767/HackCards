@@ -20,7 +20,7 @@ async def command_start_handler(message: Message) -> None:
     current_user_id = message.from_user.id
     try: 
         user = await get_user_from_db(current_user_id)
-        text = "Привет старый пользователь"
+        text = "Заполните данные, чтобы бот смог сгенерировать видео"
         await message.answer(
             text=f"{text}",
             reply_markup=start(message),
@@ -28,11 +28,20 @@ async def command_start_handler(message: Message) -> None:
     except ObjectDoesNotExist:
         user = UserProfile(telegram_id=current_user_id)
         await sync_to_async(user.save)()
-        text = "Привет новый пользователь"
+        text = "Заполните данные, чтобы бот смог сгенерировать видео"
         await message.answer(
             text=f"{text}",
             reply_markup=start(message)
         )
+
+
+@start_router.message(commands=['sendfile'])
+async def get_short_handler(message: Message) -> None:
+    await message.answer("Команда /get_short была вызвана. Здесь будет логика для генерации видео.")
+    file_path = 'path/to/your/file.txt'  # Укажите путь к вашему файлу
+    with open(file_path, 'rb') as file:
+        await message.answer_document(file)
+
 
 # form_process = Router()
 

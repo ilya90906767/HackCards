@@ -7,7 +7,7 @@ from aiogram.fsm.state import State, StatesGroup
 from django.conf import settings
 
 from .keyboard import CD, start
-from .db_methods import update_user_fio, update_user_DateBirth, update_user_DateDeath, update_user_Epigraph, update_user_Photos
+from .db_methods import update_user_fio, update_user_DateBirth, update_user_DateDeath, update_user_Epigraph, update_user_Photos, generate_short
 
 callback_router = Router()
 
@@ -106,8 +106,9 @@ async def process_Photo(message: types.Message, state: FSMContext):
     if message.photo:
         media_dir = settings.MEDIA_ROOT
         downloaded_photos = []
-        for i in range(0, len(message.photo), 3):
-            first_photo = message.photo[i+2]
+        good_photos = message.photo[-int(len(message.photo) / 2):]
+        for i in range(len(good_photos)):
+            first_photo = good_photos[i]
             photo_info = await bot.get_file(first_photo.file_id)
             file_path = os.path.join(media_dir, f"{photo_info.file_id}.jpg")
             await bot.download_file(photo_info.file_path, file_path)
@@ -121,4 +122,13 @@ async def process_Photo(message: types.Message, state: FSMContext):
             )
     else:
         await message.answer("Пожалуйста, отправьте фото.")
+
+@callback_router.callback_query(CD.filter(F.cb_text == "Short"))
+async def Epigraph_callback(message: types.Message, state: FSMContext):
+    current_user_id = message.from_user.id
+    shorts = await generate_short(current_user_id)
+    await message.answer("Спустя некоторое время напишите /getshort и мы отправим вам видео")
+    
+
+    
 

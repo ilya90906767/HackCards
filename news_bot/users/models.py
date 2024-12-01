@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     short_epigraphy = models.TextField(null=True, blank=True)  # Краткая эпитафия
     is_generated = models.BooleanField(default=False)  # Указывает, сгенерирован ли профиль
     fio = models.CharField(max_length=255, null=True, blank=True)  # Фамилия Имя Отчество
+    ready_for_generating = models.BooleanField(default=False) 
 
     def __str__(self):
         return f"User Profile(telegram_id={self.telegram_id}, date_birth={self.date_birth}, is_generated={self.is_generated})"
